@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>live.html</title>
+    <link rel="stylesheet" href="h5_skins.css">
+    <script src="http://g.alicdn.com/de/prismplayer/1.5.4/prism-min.js"></script>
+    <style>
+        .J_prismPlayer{position: relative}
+        .share{position: absolute;right: 0;top: 50%;}
+    </style>
+</head>
+<body>
+
+<!--prism-playler为h5播放器的钩子类名，必须加上-->
+<div id="J_prismPlayer" class="prism-player"></div>
+<button id="J_clickToPlay">播放</button>
+<button onclick="_pause()">暂停</button>
+<button onclick="_turnTo()">跳转到</button>
+<button onclick="_getNow()">获取当前时间</button>
+<button onclick="_getTotal()">获取总时长</button>
+<button onclick="_getVol()">获取当前音量</button>
+<button onclick="_setVol()">设置音量</button>
+<button onclick="_setUrl()">直播源设置</button>
+<button onclick="_setSizeBig()">设置播放器大小</button>
+<button onclick="_setSizeSmall()">设置播放器大小</button>
+<script>
+
+    //初始化播放器
+    var player = new prismplayer({
+        id : "J_prismPlayer",                                                       // 容器id
+        source : "http://m3u8.sctv.com:51935/live/SCTV1_M.stream/playlist.m3u8",    // 资源地址
+        autoplay : false,                                                           // 自动播放
+        width : "100%",
+        height : "400px",                                                           // 播放器尺寸
+        preload : true,                                                            // 播放器自动加载，目前仅H5可用
+        cover : "img/skin.png",                                                        // 封面图片，（注意跨域）
+        isLive : false,                                                              // 是否为直播，若为直播则禁用进度条
+        autoplay : false,                                                           // 是否自动播放，H5受浏览器限制可能失效
+        playsinline:true,                                                            //禁止自动播放
+        skinRes : "img/skin1",                                                       // 皮肤图片，需要配置skin.png和skin.xml,并配置下一行的skinLayout
+        notShowTips : false,
+        extraInfo : {
+            "fullTitle" : "四川卫视",                                               //全屏时显示视频标题（目前仅支持flash）
+            "m3u8BufferLength" : "20",                                             // 播放m3u8时加载缓存ts文件长度（目前仅支持flash）
+            "liveStartTime" : "2017/01/01",                                         // 直播开始时间，用来提示直播未开始（仅支持flash）
+            "liveStopTime" : "2017/01/01",                                         // 直播开始时间，用来提示直播结束（仅支持flash）
+            "liveRetry" : 1                                                         // 直播流终端是否重试
+        }
+    });
+
+    var J_prismPlayer = document.getElementById("J_prismPlayer");
+    var clickDown = document.getElementById("J_clickToPlay");
+    clickDown.addEventListener("click",function(e){
+        //调用播放器的play方法
+        player.play();
+    });
+    
+    if(player.loaded){
+        var video = document.getElementsByTagName("video")[0];
+            video.requestFullscreen
+        alert(video.requestFullscreen)
+    }
+
+    // 暂停
+    function _pause(){
+        player.pause();
+    }
+
+
+    //跳转到某个时刻
+    function _turnTo(){
+        player.seek(23);
+    }
+    //获取当前时间
+    function _getNow(){
+        console.log(player.getCurrentTime());
+    }
+    //获取总时长
+    function _getTotal(){
+        console.log(player.getDuration());
+    }
+    //获取音量
+    function _getVol(){
+        console.log(player.getVolume());
+    }
+    //设置音量
+    function _setVol(){
+        console.log(player.setVolume(0.5));
+    }
+    //切换源  无效
+    function _setUrl(){
+        player.loadByUrl("http://m3u8.sctv.com:51935/live/EMEI_M.stream/playlist.m3u8")
+    }
+    //设置播放器大
+    var h = 600;
+    function _setSizeBig(){
+        h+=10;
+        player.setPlayerSize("100%",h+'px')
+    }
+    function _setSizeSmall(){
+        h-=10;
+        player.setPlayerSize("100%",h+'px')
+    }
+    
+    
+//
+//    J_prismPlayer.onloadedmetadata=function(){
+//        if(J_prismPlayer.requestFullscreen){
+//            J_prismPlayer.requestFullscreen()
+//        }else if(J_prismPlayer.mozRequestFullScreen){
+//            J_prismPlayer.mozRequestFullScreen()
+//        }else if(J_prismPlayer.webkitRequestFullScreen){
+//            J_prismPlayer.webkitRequestFullScreen()
+//        }else if(J_prismPlayer.msRequestFullscreen){
+//            J_prismPlayer.msRequestFullscreen()
+//        }
+//    }
+
+
+
+</script>
+
+</body>
+</html>
